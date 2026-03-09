@@ -1,5 +1,9 @@
 title: "Tech & AI Insights"
 author: "Tamanna Sinha"
-description: "A daily log of Data Science, AI Trends, and Product Breakdowns."
-theme: minima
+description: "Data Science, AI Trends, and Product Breakdowns."
+
+# Using remote_theme instead of theme avoids Gemfile errors
 remote_theme: jekyll/minima
+plugins:
+  - jekyll-remote-theme
+  - jekyll-feed
