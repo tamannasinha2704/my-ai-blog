@@ -47,8 +47,8 @@ jobs:
       - name: Commit and Push
         if: steps.check.outputs.should_run == 'true'
         run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
+          git config --local user.email "tamannasinha2704@gmail.com" # <--- YOUR EMAIL HERE
+          git config --local user.name "tamannasinha2704"
           git add _posts/
           git commit -m "docs: automated technical research log [skip ci]"
           git push
