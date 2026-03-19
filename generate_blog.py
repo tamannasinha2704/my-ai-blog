@@ -6,7 +6,7 @@ from google.genai import types
 
 client = genai.Client(
     api_key=os.environ.get("GEMINI_API_KEY"),
-    http_options=types.HttpOptions(api_version='v1')
+    http_options=types.HttpOptions(api_version='v1beta') # Changed to v1beta
 )
 
 # Expanded topics to ensure diversity and reduce overlap
@@ -104,7 +104,7 @@ def generate_post():
     
     try:
         response = client.models.generate_content(
-            model='gemini-3-flash', # Using the latest stable flash model
+            model='gemini-3-flash-preview', # Using the latest stable flash model
             contents=prompt
         )
         content = response.text
