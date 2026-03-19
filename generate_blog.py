@@ -104,7 +104,7 @@ def generate_post():
     
     try:
         response = client.models.generate_content(
-            model='gemini-2.0-flash', # Using the latest stable flash model
+            model='gemini-3-flash', # Using the latest stable flash model
             contents=prompt
         )
         content = response.text
