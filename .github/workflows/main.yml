@@ -1,9 +1,55 @@
-- name: Commit and Push
+name: Daily Blog Automation
+
+on:
+  schedule:
+    # This runs every day at 10:00 AM UTC (3:30 PM IST)
+    - cron: '0 10 * * *'
+  workflow_dispatch: # Allows you to run it manually for testing
+
+jobs:
+  auto-blog:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Random Participation Check
+        id: check
+        run: |
+          # Generates a random number 1-10. 
+          # 1-7 (70% chance) = Run. 8-10 (30% chance) = Skip.
+          # This averages to ~5 days a week.
+          NUM=$((1 + $RANDOM % 10))
+          if [ $NUM -le 7 ]; then
+            echo "should_run=true" >> $GITHUB_OUTPUT
+            echo "Decision: AI will work today."
+          else
+            echo "should_run=false" >> $GITHUB_OUTPUT
+            echo "Decision: AI is taking a rest day."
+          fi
+
+      - name: Set up Python
+        if: steps.check.outputs.should_run == 'true'
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Dependencies
+        if: steps.check.outputs.should_run == 'true'
+        run: pip install google-genai
+
+      - name: Run AI Generator
+        if: steps.check.outputs.should_run == 'true'
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: python generate_blog.py
+
+      - name: Commit and Push
         if: steps.check.outputs.should_run == 'true'
         run: |
-          git config --local user.email "tamannasinha2704@gmail.com"
+          git config --local user.email "tamannasinha2704@gmail.com" # <--- YOUR EMAIL HERE
           git config --local user.name "tamannasinha2704"
           git add _posts/
-          # This line checks for changes; if none, it exits quietly instead of failing
-          git diff-index --quiet HEAD || git commit -m "docs: automated technical research log [skip ci]"
+          git commit -m "docs: automated technical research log [skip ci]"
           git push
+          
