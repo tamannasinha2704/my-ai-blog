@@ -1,9 +1,4 @@
-name: Daily Blog Automation
-
-on:
-  schedule:
-    # This runs every day at 10:00 AM UTC (3:30 PM IST)
-    - cron: '0 10 * * *'
+name: Daily 
   workflow_dispatch: # Allows you to run it manually for testing
 
 jobs:
